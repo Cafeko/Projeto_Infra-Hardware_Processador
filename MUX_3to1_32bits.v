@@ -9,6 +9,6 @@ module MUX_3to1_32bits (
 assign O = (Select == 2'b00) ? I0:
            (Select == 2'b01) ? I1:
            (Select == 2'b10) ? I2:
-                            32'd0;
+                            32'bx;
     
 endmodule

@@ -13,6 +13,6 @@ assign O = (Select == 3'b000) ? I0:
            (Select == 3'b010) ? I2:
            (Select == 3'b011) ? I3:
            (Select == 3'b100) ? I4:
-                             32'd0;
+                             32'bx;
     
 endmodule
