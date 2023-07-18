@@ -1,6 +1,6 @@
 module SignExtend_16to32 (
-    output [31:0] O,
-    input  [15:0] I
+    output wire [31:0] O,
+    input  wire [15:0] I
 );
 
 assign O = (I[15] == 1) ? {16'b1111111111111111, I[15:0]}:
