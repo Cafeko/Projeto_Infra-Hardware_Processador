@@ -1,4 +1,6 @@
-module MUX_2to1_32bits (
+// MUX De 2 entradas e uma saida de 32bits.
+
+module MUX_2to1 (
     output wire [31:0] O,
     input  wire [31:0] I0,
     input  wire [31:0] I1,

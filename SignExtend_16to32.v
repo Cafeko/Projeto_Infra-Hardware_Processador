@@ -1,3 +1,5 @@
+// Faz o extend de 16 para 32bits, mantendo o sinal.
+
 module SignExtend_16to32 (
     output wire [31:0] O,
     input  wire [15:0] I
