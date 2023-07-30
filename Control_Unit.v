@@ -348,9 +348,9 @@ module Control_Unit (
             else if (Opcode == 6'h1  || Opcode == 6'h20 ||
                      Opcode == 6'h21 || Opcode == 6'h23 ||
                      Opcode == 6'h28 || Opcode == 6'h29 ||
-                     Opcode == 6'h2b);
+                     Opcode == 6'h2b)
                 State <= OFFSOMARS;
-            else 
+            else
                 State <= INEXISTENTE;
         end
         else if (State == ESCREVE1) begin
@@ -1177,7 +1177,7 @@ module Control_Unit (
             Counter <= 2'b00;
             State <= SHIFTRESULT;
         end
-        else (State == SHIFTRESULT) begin
+        else if (State == SHIFTRESULT) begin
             PCWrite <= 0;
             MemWrRd <= 0;
             IRWrite <= 0;
