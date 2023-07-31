@@ -19,10 +19,14 @@ module CPU (
     wire AB_w;
     wire ALUSrcA;
     wire ALUSrcB;
+    wire MDWrite;
     wire [1:0] WriteIn;
+    wire [1:0] MDControl;
+    wire [1:0] WDControl;
     wire [2:0] PCSource;
     wire [2:0] MemAdrsSrc;
     wire [2:0] ALUControl;
+    wire [2:0] WriteDataSrc;
 
 //Data wires
     wire [31:0] M_PCSource_out;
@@ -125,7 +129,8 @@ module CPU (
         Lo,
         Hi,
         ShiftReg_out,
-        Extd_1to32_out
+        Extd_1to32_out,
+        WriteDataSrc
     );
 
     Banco_reg BReg_(
@@ -211,4 +216,24 @@ module CPU (
         ALU_out
     );
 
+    Registrador MemDataReg_(
+        clock,
+        reset,
+        MDWrite,
+        MemData_out,
+        MemDataReg_out
+    );
+
+    MD_Control MemDataControl_(
+        MDControl_out,
+        MemDataReg_out,
+        MDControl
+    );
+
+    WD_Control WriteDataControl_(
+        WDControl_out,
+        B,
+        MemDataReg_out,
+        WDControl
+    );
 endmodule
