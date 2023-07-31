@@ -20,13 +20,25 @@ module CPU (
     wire ALUSrcA;
     wire ALUSrcB;
     wire MDWrite;
+    wire ShiftEntry;
+    wire DivMultTempWrite;
+    wire DivMultEntry;
+    wire DivorMult;
+    wire WriteHi;
+    wire WriteLo;
     wire [1:0] WriteIn;
     wire [1:0] MDControl;
     wire [1:0] WDControl;
+    wire [1:0] Div;
+    wire [1:0] Mult;
     wire [2:0] PCSource;
     wire [2:0] MemAdrsSrc;
     wire [2:0] ALUControl;
     wire [2:0] WriteDataSrc;
+    wire [2:0] ShiftControl;
+
+    wire MulttoControl;
+    wire [1:0] DivtoControl;
 
 //Data wires
     wire [31:0] M_PCSource_out;
@@ -57,7 +69,23 @@ module CPU (
     wire [31:0] MuxB_out;
     wire [31:0] Extend_16to32_out;
     wire [31:0] SL2_out;
-    
+    wire [25:0] Instrucoes_25to0;
+    wire [27:0] Shift_26to28_out;
+    wire [4:0] MUX_Shift_N_out;
+    wire [31:0] MUX_Shift_Entry_out;
+    wire [31:0] DivMultTempReg_out;
+    wire [31:0] MUX_DivMult_Entry1_out;
+    wire [31:0] MUX_DivMult_Entry2_out;
+    wire [31:0] Div_out_hi;
+    wire [31:0] Div_out_lo;
+    wire [31:0] Mult_out_hi;
+    wire [31:0] Mult_out_lo;
+    wire [31:0] MUX_DivMult_Out1_out;
+    wire [31:0] MUX_DivMult_Out2_out;
+
+    assign Instrucoes_25to0 = {Instr25_21, Instr20_16, Instr15_0};
+    assign JumpAdrs = {PC_out[31:28], Shift_26to28_out};
+
     MUX_PCSource M_PCSource_(
         M_PCSource_out,
         JumpAdrs,
@@ -216,6 +244,11 @@ module CPU (
         ALU_out
     );
 
+    ShiftLeft_26to28 Shift_26to28_(
+        Shift_26to28_out,
+        Instrucoes_25to0
+    );
+    
     Registrador MemDataReg_(
         clock,
         reset,
@@ -235,5 +268,91 @@ module CPU (
         B,
         MemDataReg_out,
         WDControl
+    );
+
+    MUX_ShiftNumber MUX_Shift_N_(
+        MUX_Shift_N_out,
+        Instr15_0[10:6],
+        B[4:0],
+        ShiftEntry
+    );
+
+    MUX_2to1 MUX_Shift_Entry_(
+        MUX_Shift_Entry_out,
+        B,
+        A,
+        ShiftEntry
+    );
+
+    RegDesloc ShiftReg_(
+        clock,
+        reset,
+        ShiftControl,
+        MUX_Shift_N_out,
+        MUX_Shift_Entry_out,
+        ShiftReg_out
+    );
+
+    Registrador DivMultTempReg_(
+        clock,
+        reset,
+        DivMultTempWrite,
+        MemDataReg_out,
+        DivMultTempReg_out
+    );
+
+    MUX_2to1 MUX_DivMult_Entry1_(
+        MUX_DivMult_Entry1_out,
+        A,
+        MemDataReg_out,
+        DivMultEntry
+    );
+
+    MUX_2to1 MUX_DivMult_Entry2_(
+        MUX_DivMult_Entry2_out,
+        B,
+        DivMultTempReg_out,
+        DivMultEntry
+    );
+
+    Mult Mult_(
+        Mult_out_hi,
+        Mult_out_lo,
+        MulttoControl,
+        clock,
+        reset,
+        Mult,
+        MUX_DivMult_Entry1_out,
+        MUX_DivMult_Entry2_out
+    );
+
+    MUX_2to1 MUX_DivMult_Out1_(
+        MUX_DivMult_Out1_out,
+        Div_out_hi,
+        Mult_out_hi,
+        DivorMult
+    );
+
+    MUX_2to1 MUX_DivMult_Out2_(
+        MUX_DivMult_Out2_out,
+        Div_out_lo,
+        Mult_out_lo,
+        DivorMult
+    );
+
+    Registrador Hi_(
+        clock,
+        reset,
+        WriteHi,
+        MUX_DivMult_Out1_out,
+        Hi
+    );
+
+    Registrador Lo_(
+        clock,
+        reset,
+        WriteLo,
+        MUX_DivMult_Out2_out,
+        Lo
     );
 endmodule
