@@ -72,54 +72,55 @@ module Control_Unit (
     parameter RESET2 = 6'd1;
     parameter BUSCA1 = 6'd2;
     parameter BUSCA2 = 6'd3;
-    parameter LEITURA1 = 6'd4;
-    parameter LEITURA2 = 6'd5;
-    parameter ESCREVE1 = 6'd6;
-    parameter ESCREVE2 = 6'd7;
-    parameter AND = 6'd8;
-    parameter ADD = 6'd9;
-    parameter SUB = 6'd10;
-    parameter ADDIS = 6'd11;
-    parameter JR = 6'd12;
-    parameter J = 6'd13;
-    parameter JAL1 = 6'd14;
-    parameter JAL2 = 6'd15;
-    parameter MFHI = 6'd16;
-    parameter MFLO = 6'd17;
-    parameter SLT = 6'd18;
-    parameter BREAK = 6'd19;
-    parameter RTE = 6'd20;
-    parameter LUI = 6'd21;
-    parameter SLTI = 6'd22;
-    parameter BRANCHS = 6'd23;
-    parameter DESVIO = 6'd24;
-    parameter OFFSOMARS = 6'd25;
-    parameter MEMTOMDR1 = 6'd26;
-    parameter MEMTOMDR2 = 6'd27;
-    parameter ADDM = 6'd28;
-    parameter LB = 6'd29;
-    parameter LH = 6'd30;
-    parameter LW = 6'd31;
-    parameter SB = 6'd32;
-    parameter SH = 6'd33;
-    parameter SW = 6'd34;
-    parameter SHIFTSHAMT = 6'd35;
-    parameter SHIFTREG = 6'd36;
-    parameter SHIFTDIREITA = 6'd37;
-    parameter SHIFTARITMETICO = 6'd38;
-    parameter SHIFTESQUERDA = 6'd39;
-    parameter SHIFTRESULT = 6'd40;
-    parameter OVERFLOW = 6'd41;
-    parameter OVERFLOW2 = 6'd42;
-    parameter OVERFLOW3 = 6'd43;
-    parameter OVERFLOW4 = 6'd44;
-    parameter INEXISTENTE = 6'd45;
-    parameter INEXISTENTE2 = 6'd46;
-    parameter INEXISTENTE3 = 6'd47;
-    parameter INEXISTENTE4 = 6'd48;
-    parameter MULT1 = 6'd49;
-    parameter MULT2 = 6'd50;
-    parameter MULT3 = 6'd51;
+    parameter INSTRUCAOWRITE = 6'd4;
+    parameter LEITURA1 = 6'd5;
+    parameter LEITURA2 = 6'd6;
+    parameter ESCREVE1 = 6'd7;
+    parameter ESCREVE2 = 6'd8;
+    parameter AND = 6'd9;
+    parameter ADD = 6'd10;
+    parameter SUB = 6'd11;
+    parameter ADDIS = 6'd12;
+    parameter JR = 6'd13;
+    parameter J = 6'd14;
+    parameter JAL1 = 6'd15;
+    parameter JAL2 = 6'd16;
+    parameter MFHI = 6'd17;
+    parameter MFLO = 6'd18;
+    parameter SLT = 6'd19;
+    parameter BREAK = 6'd20;
+    parameter RTE = 6'd21;
+    parameter LUI = 6'd22;
+    parameter SLTI = 6'd23;
+    parameter BRANCHS = 6'd24;
+    parameter DESVIO = 6'd25;
+    parameter OFFSOMARS = 6'd26;
+    parameter MEMTOMDR1 = 6'd27;
+    parameter MEMTOMDR2 = 6'd28;
+    parameter ADDM = 6'd29;
+    parameter LB = 6'd30;
+    parameter LH = 6'd31;
+    parameter LW = 6'd32;
+    parameter SB = 6'd33;
+    parameter SH = 6'd34;
+    parameter SW = 6'd35;
+    parameter SHIFTSHAMT = 6'd36;
+    parameter SHIFTREG = 6'd37;
+    parameter SHIFTDIREITA = 6'd38;
+    parameter SHIFTARITMETICO = 6'd39;
+    parameter SHIFTESQUERDA = 6'd40;
+    parameter SHIFTRESULT = 6'd41;
+    parameter OVERFLOW = 6'd42;
+    parameter OVERFLOW2 = 6'd43;
+    parameter OVERFLOW3 = 6'd44;
+    parameter OVERFLOW4 = 6'd45;
+    parameter INEXISTENTE = 6'd46;
+    parameter INEXISTENTE2 = 6'd47;
+    parameter INEXISTENTE3 = 6'd48;
+    parameter INEXISTENTE4 = 6'd49;
+    parameter MULT1 = 6'd50;
+    parameter MULT2 = 6'd51;
+    parameter MULT3 = 6'd52;
 
     
     reg [5:0] State;
@@ -201,7 +202,7 @@ module Control_Unit (
             State <= BUSCA1;
         end
         else if (State == BUSCA1) begin
-            PCWrite <= 0;
+            PCWrite <= 1;//
             PCSource <= 3'b001;//
             MemWrRd <= 0;//
             MemAdrsSrc <= 3'b000;//
@@ -228,80 +229,43 @@ module Control_Unit (
             WriteHi <= 0;
             WriteLo <= 0;
             
-            if (Counter == 2'b00) begin
-                Counter <= Counter + 1;
-            end
-            else if (Counter == 2'b01) begin
-                Counter <= 2'b00;
-                State <= BUSCA2;
-            end
+            Counter <= 2'b00;
+            State <= BUSCA2;
         end
         else if (State == BUSCA2) begin
-            PCWrite <= 1;//
-            PCSource <= 3'b001;//
+            PCWrite <= 0;
+            PCSource <= 3'b000;
             MemWrRd <= 0;//
             MemAdrsSrc <= 3'b000;//
-            IRWrite <= 1;//
-            MDWrite <= 0;
-            RegWrite <= 0;
-            ABWrite <= 0;
-            ALUControl <= 3'b001;//
-            ALUSrcA <= 2'b00;//
-            ALUSrcB <= 2'b01;//
-            ALUOutWrite <= 0;
-            EPCWrite <= 0;
-            ShiftControl <= 3'b000;
-            DivMultTempWrite <= 0;
-            Div <= 2'b00;
-            Mult <= 2'b00;
-            WriteHi <= 0;
-            WriteLo <= 0;
+            ALUControl <= 3'b000;
+            ALUSrcA <= 2'b00;
+            ALUSrcB <= 2'b00;
             
-            Counter <= 2'b00;
+            State <= INSTRUCAOWRITE;
+        end
+        else if (State == INSTRUCAOWRITE) begin
+            MemWrRd <= 0;
+            MemAdrsSrc <= 3'b000;
+            IRWrite <= 1;//
+            
             State <= LEITURA1;
         end
         else if (State == LEITURA1) begin
-            PCWrite <= 0;
-            MemWrRd <= 0;
             IRWrite <= 0;
-            MDWrite <= 0;
-            RegWrite <= 0;
-            ABWrite <= 0;
-            ALUControl <= 3'b001;//
-            ALUSrcA <= 2'b00;//
-            ALUSrcB <= 2'b11;//
-            ALUOutWrite <= 0;
-            EPCWrite <= 0;
-            ShiftControl <= 3'b000;
-            DivMultTempWrite <= 0;
-            Div <= 2'b00;
-            Mult <= 2'b00;
-            WriteHi <= 0;
-            WriteLo <= 0;
-
-            Counter <= 2'b00;
-            State <= LEITURA2;
-        end
-        else if (State == LEITURA2) begin
-            PCWrite <= 0;
-            MemWrRd <= 0;
-            IRWrite <= 0;
-            MDWrite <= 0;
-            RegWrite <= 0;
             ABWrite <= 1;//
             ALUControl <= 3'b001;//
             ALUSrcA <= 2'b00;//
             ALUSrcB <= 2'b11;//
             ALUOutWrite <= 1;//
-            EPCWrite <= 0;
-            ShiftControl <= 3'b000;
-            DivMultTempWrite <= 0;
-            Div <= 2'b00;
-            Mult <= 2'b00;
-            WriteHi <= 0;
-            WriteLo <= 0;
-
-            Counter <= 2'b00;
+            
+            State <= LEITURA2;
+        end
+        else if (State == LEITURA2) begin
+            ABWrite <= 0;
+            ALUControl <= 3'b000;
+            ALUSrcA <= 2'b00;
+            ALUSrcB <= 2'b00;
+            ALUOutWrite <= 0;
 
             if (Opcode == 6'h0) begin
                 if (Funct == 6'h0 || Funct == 6'h2 ||
@@ -354,47 +318,25 @@ module Control_Unit (
                 State <= INEXISTENTE;
         end
         else if (State == ESCREVE1) begin
-            PCWrite <= 0;
-            MemWrRd <= 0;
-            IRWrite <= 0;
-            MDWrite <= 0;
             WriteIn <= 2'b01;//
             WriteDataSrc <= 3'b000;//
             RegWrite <= 1;//
-            ABWrite <= 0;
             ALUControl <= 3'b000;
+            ALUSrcA <= 2'b00;
+            ALUSrcB <= 2'b00;
             ALUOutWrite <= 0;
-            EPCWrite <= 0;
-            ShiftControl <= 3'b000;
-            DivMultTempWrite <= 0;
-            Div <= 2'b00;
-            Mult <= 2'b00;
-            WriteHi <= 0;
-            WriteLo <= 0;
 
-            Counter <= 2'b00;
             State <= BUSCA1;
         end
         else if (State == ESCREVE2) begin
-            PCWrite <= 0;
-            MemWrRd <= 0;
-            IRWrite <= 0;
-            MDWrite <= 0;
             WriteIn <= 2'b00;//
             WriteDataSrc <= 3'b000;//
             RegWrite <= 1;//
-            ABWrite <= 0;
             ALUControl <= 3'b000;
+            ALUSrcA <= 2'b00;
+            ALUSrcB <= 2'b00;
             ALUOutWrite <= 0;
-            EPCWrite <= 0;
-            ShiftControl <= 3'b000;
-            DivMultTempWrite <= 0;
-            Div <= 2'b00;
-            Mult <= 2'b00;
-            WriteHi <= 0;
-            WriteLo <= 0;
 
-            Counter <= 2'b00;
             State <= BUSCA1;
         end
         else if (State == AND) begin
@@ -420,25 +362,11 @@ module Control_Unit (
             State <= ESCREVE1;
         end
         else if (State == ADD) begin
-            PCWrite <= 0;
-            MemWrRd <= 0;
-            IRWrite <= 0;
-            MDWrite <= 0;
-            RegWrite <= 0;
-            ABWrite <= 0;
             ALUControl <= 3'b001;//
             ALUSrcA <= 2'b01;//
             ALUSrcB <= 2'b00;//
             ALUOutWrite <= 1;//
-            EPCWrite <= 0;
-            ShiftControl <= 3'b000;
-            DivMultTempWrite <= 0;
-            Div <= 2'b00;
-            Mult <= 2'b00;
-            WriteHi <= 0;
-            WriteLo <= 0;
 
-            Counter <= 2'b00;
             if (O == 1)
                 State <= OVERFLOW;
             else
@@ -470,25 +398,11 @@ module Control_Unit (
                 State <= ESCREVE1;
         end
         else if (State == ADDIS) begin
-            PCWrite <= 0;
-            MemWrRd <= 0;
-            IRWrite <= 0;
-            MDWrite <= 0;
-            RegWrite <= 0;
-            ABWrite <= 0;
             ALUControl <= 3'b001;//
             ALUSrcA <= 2'b01;//
             ALUSrcB <= 2'b10;//
             ALUOutWrite <= 1;//
-            EPCWrite <= 0;
-            ShiftControl <= 3'b000;
-            DivMultTempWrite <= 0;
-            Div <= 2'b00;
-            Mult <= 2'b00;
-            WriteHi <= 0;
-            WriteLo <= 0;
 
-            Counter <= 2'b00;
             if (Opcode == 6'h8 && O == 1)
                 State <= OVERFLOW;
             else
@@ -1166,25 +1080,12 @@ module Control_Unit (
             State <= BUSCA1;
         end
         else if (State == OVERFLOW) begin
-            PCWrite <= 0;
-            MemWrRd <= 0;
-            IRWrite <= 0;
-            MDWrite <= 0;
-            RegWrite <= 0;
-            ABWrite <= 0;
             ALUControl <= 3'b010;//
             ALUSrcA <= 2'b00;//
             ALUSrcB <= 2'b01;//
             ALUOutWrite <= 0;
             EPCWrite <= 1;//
-            ShiftControl <= 3'b000;
-            DivMultTempWrite <= 0;
-            Div <= 2'b00;
-            Mult <= 2'b00;
-            WriteHi <= 0;
-            WriteLo <= 0;
 
-            Counter <= 2'b00;
             State <= OVERFLOW2;
         end
         else if (State == OVERFLOW2) begin
