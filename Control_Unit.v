@@ -24,8 +24,7 @@ module Control_Unit (
     output reg        RegWrite,
 
     // Registradores A e B:
-    output reg        AWrite,
-    output reg        BWrite,
+    output reg        ABWrite,
 
     // ALU:
     output reg  [2:0] ALUControl,
@@ -141,8 +140,7 @@ module Control_Unit (
         WriteIn <= 2'b00;
         WriteDataSrc <= 3'b000;
         RegWrite <= 0;
-        AWrite <= 0;
-        BWrite <= 0;
+        ABWrite <= 0;
         ALUControl <= 3'b000;
         ALUSrcA <= 2'b00;
         ALUSrcB <= 2'b00;
@@ -180,8 +178,7 @@ module Control_Unit (
             WriteIn <= 2'b00;
             WriteDataSrc <= 3'b000;
             RegWrite <= 0;
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b000;
             ALUSrcA <= 2'b00;
             ALUSrcB <= 2'b00;
@@ -211,8 +208,7 @@ module Control_Unit (
             IRWrite <= 0;
             MDWrite <= 0;
             RegWrite <= 0;
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b001;//
             ALUSrcA <= 2'b00;//
             ALUSrcB <= 2'b01;//
@@ -241,8 +237,7 @@ module Control_Unit (
             IRWrite <= 1;//
             MDWrite <= 0;
             RegWrite <= 0;
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b001;//
             ALUSrcA <= 2'b00;//
             ALUSrcB <= 2'b01;//
@@ -264,8 +259,7 @@ module Control_Unit (
             IRWrite <= 0;
             MDWrite <= 0;
             RegWrite <= 0;
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b001;//
             ALUSrcA <= 2'b00;//
             ALUSrcB <= 2'b11;//
@@ -287,8 +281,7 @@ module Control_Unit (
             IRWrite <= 0;
             MDWrite <= 0;
             RegWrite <= 0;
-            AWrite <= 1;//
-            BWrite <= 1;//
+            ABWrite <= 1;//
             ALUControl <= 3'b001;//
             ALUSrcA <= 2'b00;//
             ALUSrcB <= 2'b11;//
@@ -361,8 +354,7 @@ module Control_Unit (
             WriteIn <= 2'b01;//
             WriteDataSrc <= 3'b000;//
             RegWrite <= 1;//
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b000;
             ALUOutWrite <= 0;
             EPCWrite <= 0;
@@ -384,8 +376,7 @@ module Control_Unit (
             WriteIn <= 2'b00;//
             WriteDataSrc <= 3'b000;//
             RegWrite <= 1;//
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b000;
             ALUOutWrite <= 0;
             EPCWrite <= 0;
@@ -405,8 +396,7 @@ module Control_Unit (
             IRWrite <= 0;
             MDWrite <= 0;
             RegWrite <= 0;
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b011;//
             ALUSrcA <= 2'b01;//
             ALUSrcB <= 2'b00;//
@@ -428,8 +418,7 @@ module Control_Unit (
             IRWrite <= 0;
             MDWrite <= 0;
             RegWrite <= 0;
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b001;//
             ALUSrcA <= 2'b01;//
             ALUSrcB <= 2'b00;//
@@ -454,8 +443,7 @@ module Control_Unit (
             IRWrite <= 0;
             MDWrite <= 0;
             RegWrite <= 0;
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b010;//
             ALUSrcA <= 2'b01;//
             ALUSrcB <= 2'b00;//
@@ -480,8 +468,7 @@ module Control_Unit (
             IRWrite <= 0;
             MDWrite <= 0;
             RegWrite <= 0;
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b001;//
             ALUSrcA <= 2'b01;//
             ALUSrcB <= 2'b10;//
@@ -507,8 +494,7 @@ module Control_Unit (
             IRWrite <= 0;
             MDWrite <= 0;
             RegWrite <= 0;
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b000;//
             ALUSrcA <= 2'b01;//
             ALUOutWrite <= 0;
@@ -530,8 +516,7 @@ module Control_Unit (
             IRWrite <= 0;
             MDWrite <= 0;
             RegWrite <= 0;
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b000;
             ALUOutWrite <= 0;
             EPCWrite <= 0;
@@ -551,8 +536,7 @@ module Control_Unit (
             IRWrite <= 0;
             MDWrite <= 0;
             RegWrite <= 0;
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b000;//
             ALUSrcA <= 2'b00;//
             ALUOutWrite <= 1;//
@@ -576,8 +560,7 @@ module Control_Unit (
             WriteHi <= 2'b11;//
             WriteDataSrc <= 3'b000;//
             RegWrite <= 1;//
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b000;
             ALUOutWrite <= 0;
             EPCWrite <= 0;
@@ -599,8 +582,7 @@ module Control_Unit (
             WriteHi <= 2'b01;//
             WriteDataSrc <= 3'b100;//
             RegWrite <= 1;//
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b000;
             ALUOutWrite <= 0;
             EPCWrite <= 0;
@@ -622,8 +604,7 @@ module Control_Unit (
             WriteHi <= 2'b01;//
             WriteDataSrc <= 3'b011;//
             RegWrite <= 1;//
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b000;
             ALUOutWrite <= 0;
             EPCWrite <= 0;
@@ -645,8 +626,7 @@ module Control_Unit (
             WriteHi <= 2'b01;//
             WriteDataSrc <= 3'b111;//
             RegWrite <= 1;//
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b111;//
             ALUSrcA <= 2'b01;//
             ALUSrcB <= 2'b00;//
@@ -669,8 +649,7 @@ module Control_Unit (
             IRWrite <= 0;
             MDWrite <= 0;
             RegWrite <= 0;
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b010;//
             ALUSrcA <= 2'b00;//
             ALUSrcB <= 2'b01;//
@@ -693,8 +672,7 @@ module Control_Unit (
             IRWrite <= 0;
             MDWrite <= 0;
             RegWrite <= 0;
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b000;
             ALUOutWrite <= 0;
             EPCWrite <= 0;
@@ -716,8 +694,7 @@ module Control_Unit (
             WriteHi <= 2'b00;//
             WriteDataSrc <= 3'b010;//
             RegWrite <= 1;//
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b000;
             ALUOutWrite <= 0;
             EPCWrite <= 0;
@@ -739,8 +716,7 @@ module Control_Unit (
             WriteHi <= 2'b00;//
             WriteDataSrc <= 3'b111;//
             RegWrite <= 1;//
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b111;///
             ALUSrcA <= 2'b01;//
             ALUSrcB <= 2'b10;//
@@ -762,8 +738,7 @@ module Control_Unit (
             IRWrite <= 0;
             MDWrite <= 0;
             RegWrite <= 0;
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b111;//
             ALUSrcA <= 2'b01;//
             ALUSrcB <= 2'b00;//
@@ -795,8 +770,7 @@ module Control_Unit (
             IRWrite <= 0;
             MDWrite <= 0;
             RegWrite <= 0;
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b000;
             ALUOutWrite <= 0;
             EPCWrite <= 0;
@@ -816,8 +790,7 @@ module Control_Unit (
             IRWrite <= 0;
             MDWrite <= 0;
             RegWrite <= 0;
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b001;//
             ALUSrcA <= 2'b01;//
             ALUSrcB <= 2'b10;//
@@ -840,8 +813,7 @@ module Control_Unit (
             IRWrite <= 0;
             MDWrite <= 0;
             RegWrite <= 0;
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b000;
             ALUOutWrite <= 0;
             EPCWrite <= 0;
@@ -867,8 +839,7 @@ module Control_Unit (
             IRWrite <= 0;
             MDWrite <= 1;//
             RegWrite <= 0;
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b000;
             ALUOutWrite <= 0;
             EPCWrite <= 0;
@@ -901,8 +872,7 @@ module Control_Unit (
             IRWrite <= 0;
             MDWrite <= 0;
             RegWrite <= 0;
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b001;//
             ALUSrcA <= 2'b10;//
             ALUSrcB <= 2'b00;//
@@ -930,8 +900,7 @@ module Control_Unit (
             WriteIn <= 2'b00;//
             WriteDataSrc <= 3'b001;//
             RegWrite <= 1;//
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b000;
             ALUOutWrite <= 0;
             EPCWrite <= 0;
@@ -954,8 +923,7 @@ module Control_Unit (
             WriteIn <= 2'b00;//
             WriteDataSrc <= 3'b001;//
             RegWrite <= 1;//
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b000;
             ALUOutWrite <= 0;
             EPCWrite <= 0;
@@ -978,8 +946,7 @@ module Control_Unit (
             WriteIn <= 2'b00;//
             WriteDataSrc <= 3'b001;//
             RegWrite <= 1;//
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b000;
             ALUOutWrite <= 0;
             EPCWrite <= 0;
@@ -1001,8 +968,7 @@ module Control_Unit (
             IRWrite <= 0;
             MDWrite <= 0;
             RegWrite <= 0;
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b000;
             ALUOutWrite <= 0;
             EPCWrite <= 0;
@@ -1024,8 +990,7 @@ module Control_Unit (
             IRWrite <= 0;
             MDWrite <= 0;
             RegWrite <= 0;
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b000;
             ALUOutWrite <= 0;
             EPCWrite <= 0;
@@ -1047,8 +1012,7 @@ module Control_Unit (
             IRWrite <= 0;
             MDWrite <= 0;
             RegWrite <= 0;
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b000;
             ALUOutWrite <= 0;
             EPCWrite <= 0;
@@ -1068,8 +1032,7 @@ module Control_Unit (
             IRWrite <= 0;
             MDWrite <= 0;
             RegWrite <= 0;
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b000;
             ALUOutWrite <= 0;
             EPCWrite <= 0;
@@ -1095,8 +1058,7 @@ module Control_Unit (
             IRWrite <= 0;
             MDWrite <= 0;
             RegWrite <= 0;
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b000;
             ALUOutWrite <= 0;
             EPCWrite <= 0;
@@ -1120,8 +1082,7 @@ module Control_Unit (
             IRWrite <= 0;
             MDWrite <= 0;
             RegWrite <= 0;
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b000;
             ALUOutWrite <= 0;
             EPCWrite <= 0;
@@ -1141,8 +1102,7 @@ module Control_Unit (
             IRWrite <= 0;
             MDWrite <= 0;
             RegWrite <= 0;
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b000;
             ALUOutWrite <= 0;
             EPCWrite <= 0;
@@ -1162,8 +1122,7 @@ module Control_Unit (
             IRWrite <= 0;
             MDWrite <= 0;
             RegWrite <= 0;
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b000;
             ALUOutWrite <= 0;
             EPCWrite <= 0;
@@ -1185,8 +1144,7 @@ module Control_Unit (
             WriteIn <= 2'b01;//
             WriteDataSrc <= 3'b101;//
             RegWrite <= 1;//
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b000;
             ALUOutWrite <= 0;
             EPCWrite <= 0;
@@ -1206,8 +1164,7 @@ module Control_Unit (
             IRWrite <= 0;
             MDWrite <= 0;
             RegWrite <= 0;
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b010;//
             ALUSrcA <= 2'b00;//
             ALUSrcB <= 2'b01;//
@@ -1230,8 +1187,7 @@ module Control_Unit (
             IRWrite <= 0;
             MDWrite <= 0;
             RegWrite <= 0;
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b000;
             ALUOutWrite <= 0;
             EPCWrite <= 0;
@@ -1257,8 +1213,7 @@ module Control_Unit (
             IRWrite <= 0;
             MDWrite <= 1;//
             RegWrite <= 0;
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b000;
             ALUOutWrite <= 0;
             EPCWrite <= 0;
@@ -1280,8 +1235,7 @@ module Control_Unit (
             MDWrite <= 0;
             MDControl <= 2'b10;//
             RegWrite <= 0;
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b000;
             ALUOutWrite <= 0;
             EPCWrite <= 0;
@@ -1301,8 +1255,7 @@ module Control_Unit (
             IRWrite <= 0;
             MDWrite <= 0;
             RegWrite <= 0;
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b010;//
             ALUSrcA <= 2'b00;//
             ALUSrcB <= 2'b01;//
@@ -1325,8 +1278,7 @@ module Control_Unit (
             IRWrite <= 0;
             MDWrite <= 0;
             RegWrite <= 0;
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b000;
             ALUOutWrite <= 0;
             EPCWrite <= 0;
@@ -1352,8 +1304,7 @@ module Control_Unit (
             IRWrite <= 0;
             MDWrite <= 1;//
             RegWrite <= 0;
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b000;
             ALUOutWrite <= 0;
             EPCWrite <= 0;
@@ -1375,8 +1326,7 @@ module Control_Unit (
             MDWrite <= 0;
             MDControl <= 2'b10;//
             RegWrite <= 0;
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b000;
             ALUOutWrite <= 0;
             EPCWrite <= 0;
@@ -1396,8 +1346,7 @@ module Control_Unit (
             IRWrite <= 0;
             MDWrite <= 0;
             RegWrite <= 0;
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b000;
             ALUOutWrite <= 0;
             EPCWrite <= 0;
@@ -1418,8 +1367,7 @@ module Control_Unit (
             IRWrite <= 0;
             MDWrite <= 0;
             RegWrite <= 0;
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b000;
             ALUOutWrite <= 0;
             EPCWrite <= 0;
@@ -1440,8 +1388,7 @@ module Control_Unit (
             IRWrite <= 0;
             MDWrite <= 0;
             RegWrite <= 0;
-            AWrite <= 0;
-            BWrite <= 0;
+            ABWrite <= 0;
             ALUControl <= 3'b000;
             ALUOutWrite <= 0;
             EPCWrite <= 0;
