@@ -16,7 +16,7 @@ module CPU (
     wire MemWrRd;
     wire IRWrite;
     wire RegWrite;
-    wire AB_w;
+    wire ABWrite;
     wire ALUSrcA;
     wire ALUSrcB;
     wire MDWrite;
@@ -176,7 +176,7 @@ module CPU (
     Registrador A_(
         clock,
         reset,
-        AB_w,
+        ABWrite,
         BReg_to_A,
         A
     );
@@ -184,7 +184,7 @@ module CPU (
     Registrador B_(
         clock,
         reset,
-        AB_w,
+        ABWrite,
         BReg_to_B,
         B
     );
@@ -193,7 +193,7 @@ module CPU (
         MuxA_out,
         PC_out,
         A,
-        MemDataReg_out
+        MemDataReg_out,
         ALUSrcA
     );
 
@@ -354,5 +354,46 @@ module CPU (
         WriteLo,
         MUX_DivMult_Out2_out,
         Lo
+    );
+
+    Control_Unit Control_(
+        PCWrite,
+        PCSource,
+        MemWrRd,
+        MemAdrsSrc,
+        WD_Control,
+        IRWrite,
+        MDWrite,
+        MD_Control,
+        WriteIn,
+        WriteDataSrc,
+        RegWrite,
+        ABWrite,
+        ALUControl,
+        ALUSrcA,
+        ALUSrcB,
+        ALUOutWrite,
+        EPCWrite,
+        ShiftControl,
+        ShiftEntry,
+        DivMultTempWrite,
+        DivMultEntry,
+        Div,
+        Mult,
+        DivorMult,
+        WriteHi,
+        WriteLo,
+        clock,
+        reset,
+        MulttoControl,
+        DivtoControl,
+        Instr15_0[5:0],
+        Opcode,
+        Z,
+        N,
+        O,
+        ET,
+        GT,
+        LT
     );
 endmodule
