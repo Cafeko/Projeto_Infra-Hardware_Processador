@@ -82,6 +82,8 @@ module CPU (
     wire [31:0] Mult_out_lo;
     wire [31:0] MUX_DivMult_Out1_out;
     wire [31:0] MUX_DivMult_Out2_out;
+    wire [31:0] Hi;
+    wire [31:0] Lo;
 
     assign Instrucoes_25to0 = {Instr25_21, Instr20_16, Instr15_0};
     assign JumpAdrs = {PC_out[31:28], Shift_26to28_out};
@@ -141,7 +143,7 @@ module CPU (
 
     ShiftLeft16 SL16_(
         SL16_out,
-        Instr15_0,
+        Instr15_0
     );
 
     Extend_1to32 Extd_1to32_(
