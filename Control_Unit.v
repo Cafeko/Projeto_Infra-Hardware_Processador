@@ -127,7 +127,7 @@ module Control_Unit (
     
 
     initial begin
-        State <= RESET1;
+        State <= BUSCA1;
         Counter <= 2'b00;
         PCWrite <= 0;
         PCSource <= 3'b000;
@@ -205,8 +205,12 @@ module Control_Unit (
             PCSource <= 3'b001;//
             MemWrRd <= 0;//
             MemAdrsSrc <= 3'b000;//
+            WDControl <= 2'b00;
             IRWrite <= 0;
             MDWrite <= 0;
+            MDControl <= 2'b00;
+            WriteIn <= 2'b00;
+            WriteDataSrc <= 3'b000;
             RegWrite <= 0;
             ABWrite <= 0;
             ALUControl <= 3'b001;//
@@ -215,9 +219,12 @@ module Control_Unit (
             ALUOutWrite <= 0;
             EPCWrite <= 0;
             ShiftControl <= 3'b000;
+            ShiftEntry <= 0;
             DivMultTempWrite <= 0;
+            DivMultEntry <= 0;
             Div <= 2'b00;
             Mult <= 2'b00;
+            DivorMult <= 0;
             WriteHi <= 0;
             WriteLo <= 0;
             

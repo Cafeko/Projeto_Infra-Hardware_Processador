@@ -17,8 +17,6 @@ module CPU (
     wire IRWrite;
     wire RegWrite;
     wire ABWrite;
-    wire ALUSrcA;
-    wire ALUSrcB;
     wire MDWrite;
     wire ShiftEntry;
     wire DivMultTempWrite;
@@ -26,6 +24,8 @@ module CPU (
     wire DivorMult;
     wire WriteHi;
     wire WriteLo;
+    wire [1:0] ALUSrcA;
+    wire [1:0] ALUSrcB;
     wire [1:0] WriteIn;
     wire [1:0] MDControl;
     wire [1:0] WDControl;
