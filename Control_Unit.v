@@ -271,7 +271,7 @@ module Control_Unit (
                 if (Funct == 6'h0 || Funct == 6'h2 ||
                     Funct == 6'h3)
                     State <= SHIFTSHAMT;
-                if (Funct == 6'h4 || Funct == 6'h7)
+                else if (Funct == 6'h4 || Funct == 6'h7)
                     State <= SHIFTREG;
                 else if (Funct == 6'h8)
                     State <= JR;
@@ -468,27 +468,13 @@ module Control_Unit (
             State <= BUSCA1;
         end
         else if (State == SLT) begin
-            PCWrite <= 0;
-            MemWrRd <= 0;
-            IRWrite <= 0;
-            MDWrite <= 0;
             WriteIn <= 2'b01;//
             WriteDataSrc <= 3'b111;//
             RegWrite <= 1;//
-            ABWrite <= 0;
             ALUControl <= 3'b111;//
             ALUSrcA <= 2'b01;//
             ALUSrcB <= 2'b00;//
-            ALUOutWrite <= 0;
-            EPCWrite <= 0;
-            ShiftControl <= 3'b000;
-            DivMultTempWrite <= 0;
-            Div <= 2'b00;
-            Mult <= 2'b00;
-            WriteHi <= 0;
-            WriteLo <= 0;
-
-            Counter <= 2'b00;
+            
             State <= BUSCA1;
         end
         else if (State == BREAK) begin
@@ -529,27 +515,13 @@ module Control_Unit (
             State <= BUSCA1;
         end
         else if (State == SLTI) begin
-            PCWrite <= 0;
-            MemWrRd <= 0;
-            IRWrite <= 0;
-            MDWrite <= 0;
             WriteIn <= 2'b00;//
             WriteDataSrc <= 3'b111;//
             RegWrite <= 1;//
-            ABWrite <= 0;
             ALUControl <= 3'b111;///
             ALUSrcA <= 2'b01;//
             ALUSrcB <= 2'b10;//
-            ALUOutWrite <= 0;
-            EPCWrite <= 0;
-            ShiftControl <= 3'b000;
-            DivMultTempWrite <= 0;
-            Div <= 2'b00;
-            Mult <= 2'b00;
-            WriteHi <= 0;
-            WriteLo <= 0;
-
-            Counter <= 2'b00;
+            
             State <= BUSCA1;
         end
         else if (State == BRANCHS) begin
@@ -847,24 +819,9 @@ module Control_Unit (
             State <= BUSCA1;
         end
         else if (State == SHIFTSHAMT) begin
-            PCWrite <= 0;
-            MemWrRd <= 0;
-            IRWrite <= 0;
-            MDWrite <= 0;
-            RegWrite <= 0;
-            ABWrite <= 0;
-            ALUControl <= 3'b000;
-            ALUOutWrite <= 0;
-            EPCWrite <= 0;
             ShiftControl <= 3'b001;//
             ShiftEntry <= 0;//
-            DivMultTempWrite <= 0;
-            Div <= 2'b00;
-            Mult <= 2'b00;
-            WriteHi <= 0;
-            WriteLo <= 0;
-
-            Counter <= 2'b00;
+            
             if (Funct == 6'h2)
                 State <= SHIFTDIREITA;
             else if (Funct == 6'h3)
@@ -873,109 +830,38 @@ module Control_Unit (
                 State <= SHIFTESQUERDA;
         end
         else if (State == SHIFTREG) begin
-            PCWrite <= 0;
-            MemWrRd <= 0;
-            IRWrite <= 0;
-            MDWrite <= 0;
-            RegWrite <= 0;
-            ABWrite <= 0;
-            ALUControl <= 3'b000;
-            ALUOutWrite <= 0;
-            EPCWrite <= 0;
             ShiftControl <= 3'b001;//
             ShiftEntry <= 1;//
-            DivMultTempWrite <= 0;
-            Div <= 2'b00;
-            Mult <= 2'b00;
-            WriteHi <= 0;
-            WriteLo <= 0;
-
-            Counter <= 2'b00;
+            
             if (Funct == 6'h4)
                 State <= SHIFTESQUERDA;
             else if (Funct == 6'h7)
                 State <= SHIFTARITMETICO;
         end
         else if (State == SHIFTDIREITA) begin
-            PCWrite <= 0;
-            MemWrRd <= 0;
-            IRWrite <= 0;
-            MDWrite <= 0;
-            RegWrite <= 0;
-            ABWrite <= 0;
-            ALUControl <= 3'b000;
-            ALUOutWrite <= 0;
-            EPCWrite <= 0;
             ShiftControl <= 3'b011;//
-            DivMultTempWrite <= 0;
-            Div <= 2'b00;
-            Mult <= 2'b00;
-            WriteHi <= 0;
-            WriteLo <= 0;
+            ShiftEntry <= 0;
 
-            Counter <= 2'b00;
             State <= SHIFTRESULT;
         end
         else if (State == SHIFTARITMETICO) begin
-            PCWrite <= 0;
-            MemWrRd <= 0;
-            IRWrite <= 0;
-            MDWrite <= 0;
-            RegWrite <= 0;
-            ABWrite <= 0;
-            ALUControl <= 3'b000;
-            ALUOutWrite <= 0;
-            EPCWrite <= 0;
             ShiftControl <= 3'b100;//
-            DivMultTempWrite <= 0;
-            Div <= 2'b00;
-            Mult <= 2'b00;
-            WriteHi <= 0;
-            WriteLo <= 0;
-
-            Counter <= 2'b00;
+            ShiftEntry <= 0;
+            
             State <= SHIFTRESULT;
         end
         else if (State == SHIFTESQUERDA) begin
-            PCWrite <= 0;
-            MemWrRd <= 0;
-            IRWrite <= 0;
-            MDWrite <= 0;
-            RegWrite <= 0;
-            ABWrite <= 0;
-            ALUControl <= 3'b000;
-            ALUOutWrite <= 0;
-            EPCWrite <= 0;
             ShiftControl <= 3'b010;//
-            DivMultTempWrite <= 0;
-            Div <= 2'b00;
-            Mult <= 2'b00;
-            WriteHi <= 0;
-            WriteLo <= 0;
-
-            Counter <= 2'b00;
+            ShiftEntry <= 0;
+            
             State <= SHIFTRESULT;
         end
         else if (State == SHIFTRESULT) begin
-            PCWrite <= 0;
-            MemWrRd <= 0;
-            IRWrite <= 0;
-            MDWrite <= 0;
             WriteIn <= 2'b01;//
             WriteDataSrc <= 3'b101;//
             RegWrite <= 1;//
-            ABWrite <= 0;
-            ALUControl <= 3'b000;
-            ALUOutWrite <= 0;
-            EPCWrite <= 0;
             ShiftControl <= 3'b000;
-            DivMultTempWrite <= 0;
-            Div <= 2'b00;
-            Mult <= 2'b00;
-            WriteHi <= 0;
-            WriteLo <= 0;
-
-            Counter <= 2'b00;
+            
             State <= BUSCA1;
         end
         else if (State == OVERFLOW) begin
