@@ -340,25 +340,11 @@ module Control_Unit (
             State <= BUSCA1;
         end
         else if (State == AND) begin
-            PCWrite <= 0;
-            MemWrRd <= 0;
-            IRWrite <= 0;
-            MDWrite <= 0;
-            RegWrite <= 0;
-            ABWrite <= 0;
             ALUControl <= 3'b011;//
             ALUSrcA <= 2'b01;//
             ALUSrcB <= 2'b00;//
             ALUOutWrite <= 1;//
-            EPCWrite <= 0;
-            ShiftControl <= 3'b000;
-            DivMultTempWrite <= 0;
-            Div <= 2'b00;
-            Mult <= 2'b00;
-            WriteHi <= 0;
-            WriteLo <= 0;
 
-            Counter <= 2'b00;
             State <= ESCREVE1;
         end
         else if (State == ADD) begin
@@ -373,25 +359,11 @@ module Control_Unit (
                 State <= ESCREVE1;
         end
         else if (State == SUB) begin
-            PCWrite <= 0;
-            MemWrRd <= 0;
-            IRWrite <= 0;
-            MDWrite <= 0;
-            RegWrite <= 0;
-            ABWrite <= 0;
             ALUControl <= 3'b010;//
             ALUSrcA <= 2'b01;//
             ALUSrcB <= 2'b00;//
             ALUOutWrite <= 1;//
-            EPCWrite <= 0;
-            ShiftControl <= 3'b000;
-            DivMultTempWrite <= 0;
-            Div <= 2'b00;
-            Mult <= 2'b00;
-            WriteHi <= 0;
-            WriteLo <= 0;
-
-            Counter <= 2'b00;
+            
             if (O == 1)
                 State <= OVERFLOW;
             else
@@ -411,23 +383,9 @@ module Control_Unit (
         else if (State == JR) begin
             PCWrite <= 1;//
             PCSource <= 3'b001;//
-            MemWrRd <= 0;
-            IRWrite <= 0;
-            MDWrite <= 0;
-            RegWrite <= 0;
-            ABWrite <= 0;
             ALUControl <= 3'b000;//
             ALUSrcA <= 2'b01;//
-            ALUOutWrite <= 0;
-            EPCWrite <= 0;
-            ShiftControl <= 3'b000;
-            DivMultTempWrite <= 0;
-            Div <= 2'b00;
-            Mult <= 2'b00;
-            WriteHi <= 0;
-            WriteLo <= 0;
-
-            Counter <= 2'b00;
+            
             State <= BUSCA1;
         end
         else if (State == J) begin
@@ -478,7 +436,7 @@ module Control_Unit (
             MemWrRd <= 0;
             IRWrite <= 0;
             MDWrite <= 0;
-            WriteHi <= 2'b11;//
+            WriteIn <= 2'b11;//
             WriteDataSrc <= 3'b000;//
             RegWrite <= 1;//
             ABWrite <= 0;
@@ -496,47 +454,17 @@ module Control_Unit (
             State <= BUSCA1;
         end
         else if (State == MFHI) begin
-            PCWrite <= 0;
-            MemWrRd <= 0;
-            IRWrite <= 0;
-            MDWrite <= 0;
-            WriteHi <= 2'b01;//
+            WriteIn <= 2'b01;//
             WriteDataSrc <= 3'b100;//
             RegWrite <= 1;//
-            ABWrite <= 0;
-            ALUControl <= 3'b000;
-            ALUOutWrite <= 0;
-            EPCWrite <= 0;
-            ShiftControl <= 3'b000;
-            DivMultTempWrite <= 0;
-            Div <= 2'b00;
-            Mult <= 2'b00;
-            WriteHi <= 0;
-            WriteLo <= 0;
-
-            Counter <= 2'b00;
+            
             State <= BUSCA1;
         end
         else if (State == MFLO) begin
-            PCWrite <= 0;
-            MemWrRd <= 0;
-            IRWrite <= 0;
-            MDWrite <= 0;
-            WriteHi <= 2'b01;//
+            WriteIn <= 2'b01;//
             WriteDataSrc <= 3'b011;//
             RegWrite <= 1;//
-            ABWrite <= 0;
-            ALUControl <= 3'b000;
-            ALUOutWrite <= 0;
-            EPCWrite <= 0;
-            ShiftControl <= 3'b000;
-            DivMultTempWrite <= 0;
-            Div <= 2'b00;
-            Mult <= 2'b00;
-            WriteHi <= 0;
-            WriteLo <= 0;
-
-            Counter <= 2'b00;
+            
             State <= BUSCA1;
         end
         else if (State == SLT) begin
@@ -544,7 +472,7 @@ module Control_Unit (
             MemWrRd <= 0;
             IRWrite <= 0;
             MDWrite <= 0;
-            WriteHi <= 2'b01;//
+            WriteIn <= 2'b01;//
             WriteDataSrc <= 3'b111;//
             RegWrite <= 1;//
             ABWrite <= 0;
@@ -566,45 +494,16 @@ module Control_Unit (
         else if (State == BREAK) begin
             PCWrite <= 1;//
             PCSource <= 3'b001;//
-            MemWrRd <= 0;
-            IRWrite <= 0;
-            MDWrite <= 0;
-            RegWrite <= 0;
-            ABWrite <= 0;
             ALUControl <= 3'b010;//
             ALUSrcA <= 2'b00;//
             ALUSrcB <= 2'b01;//
-            ALUOutWrite <= 0;
-            EPCWrite <= 0;
-            ShiftControl <= 3'b000;
-            DivMultTempWrite <= 0;
-            Div <= 2'b00;
-            Mult <= 2'b00;
-            WriteHi <= 0;
-            WriteLo <= 0;
-
-            Counter <= 2'b00;
+            
             State <= BUSCA1;
         end
         else if (State == RTE) begin
             PCWrite <= 1;//
             PCSource <= 3'b010;//
-            MemWrRd <= 0;
-            IRWrite <= 0;
-            MDWrite <= 0;
-            RegWrite <= 0;
-            ABWrite <= 0;
-            ALUControl <= 3'b000;
-            ALUOutWrite <= 0;
-            EPCWrite <= 0;
-            ShiftControl <= 3'b000;
-            DivMultTempWrite <= 0;
-            Div <= 2'b00;
-            Mult <= 2'b00;
-            WriteHi <= 0;
-            WriteLo <= 0;
-
-            Counter <= 2'b00;
+            
             State <= BUSCA1;
         end
         else if (State == LUI) begin
@@ -612,7 +511,7 @@ module Control_Unit (
             MemWrRd <= 0;
             IRWrite <= 0;
             MDWrite <= 0;
-            WriteHi <= 2'b00;//
+            WriteIn <= 2'b00;//
             WriteDataSrc <= 3'b010;//
             RegWrite <= 1;//
             ABWrite <= 0;
@@ -634,7 +533,7 @@ module Control_Unit (
             MemWrRd <= 0;
             IRWrite <= 0;
             MDWrite <= 0;
-            WriteHi <= 2'b00;//
+            WriteIn <= 2'b00;//
             WriteDataSrc <= 3'b111;//
             RegWrite <= 1;//
             ABWrite <= 0;
