@@ -267,6 +267,7 @@ module Control_Unit (
             ALUSrcB <= 2'b00;
             ALUOutWrite <= 0;
 
+            Counter <= 2'b00;
             if (Opcode == 6'h0) begin
                 if (Funct == 6'h0 || Funct == 6'h2 ||
                     Funct == 6'h3)
@@ -525,55 +526,33 @@ module Control_Unit (
             State <= BUSCA1;
         end
         else if (State == BRANCHS) begin
-            PCWrite <= 0;
-            MemWrRd <= 0;
-            IRWrite <= 0;
-            MDWrite <= 0;
-            RegWrite <= 0;
-            ABWrite <= 0;
             ALUControl <= 3'b111;//
             ALUSrcA <= 2'b01;//
             ALUSrcB <= 2'b00;//
-            ALUOutWrite <= 0;
-            EPCWrite <= 0;
-            ShiftControl <= 3'b000;
-            DivMultTempWrite <= 0;
-            Div <= 2'b00;
-            Mult <= 2'b00;
-            WriteHi <= 0;
-            WriteLo <= 0;
-
-            Counter <= 2'b00;
-            if ((Opcode == 6'h4 && ET == 0) ||
-                (Opcode == 6'h5 && ET == 1) ||
-                (Opcode == 6'h6 && GT == 1) ||
-                (Opcode == 6'h7 && GT == 0))
-                State <= BUSCA1;
-            else if ((Opcode == 6'h4 && ET == 1) ||
-                (Opcode == 6'h5 && ET == 0) ||
-                (Opcode == 6'h6 && (ET == 1 || LT == 1)) ||
-                (Opcode == 6'h7 && GT == 1))
-                State <= DESVIO;
+            
+            if (Counter == 2'b01) begin 
+                if ((Opcode == 6'h4 && ET == 0) ||
+                    (Opcode == 6'h5 && ET == 1) ||
+                    (Opcode == 6'h6 && GT == 1) ||
+                    (Opcode == 6'h7 && GT == 0))
+                    State <= BUSCA1;
+                else if ((Opcode == 6'h4 && ET == 1) ||
+                    (Opcode == 6'h5 && ET == 0) ||
+                    (Opcode == 6'h6 && (ET == 1 || LT == 1)) ||
+                    (Opcode == 6'h7 && GT == 1))
+                    State <= DESVIO;
+            end
+            else
+                Counter = Counter + 1;
         end
         else if (State == DESVIO) begin
             PCWrite <= 1;//
             PCSource <= 3'b011;//
-            MemWrRd <= 0;
-            IRWrite <= 0;
-            MDWrite <= 0;
-            RegWrite <= 0;
-            ABWrite <= 0;
             ALUControl <= 3'b000;
-            ALUOutWrite <= 0;
-            EPCWrite <= 0;
-            ShiftControl <= 3'b000;
-            DivMultTempWrite <= 0;
-            Div <= 2'b00;
-            Mult <= 2'b00;
-            WriteHi <= 0;
-            WriteLo <= 0;
+            ALUSrcA <= 2'b00;
+            ALUSrcB <= 2'b00;
 
-            Counter <= 2'b00;
+            Counter = 2'b00;
             State <= BUSCA1;
         end
         else if (State == OFFSOMARS) begin
