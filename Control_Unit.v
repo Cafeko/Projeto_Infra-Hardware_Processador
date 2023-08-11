@@ -682,169 +682,76 @@ module Control_Unit (
             ALUControl <= 3'b010;//
             ALUSrcA <= 2'b00;//
             ALUSrcB <= 2'b01;//
-            ALUOutWrite <= 0;
             EPCWrite <= 1;//
+            MemWrRd <= 0;//
+            MemAdrsSrc <= 3'b011;//
+            ALUOutWrite <= 0;
 
             State <= OVERFLOW2;
         end
         else if (State == OVERFLOW2) begin
-            PCWrite <= 0;
             MemWrRd <= 0;//
             MemAdrsSrc <= 3'b011;//
-            IRWrite <= 0;
-            MDWrite <= 0;
-            RegWrite <= 0;
-            ABWrite <= 0;
             ALUControl <= 3'b000;
-            ALUOutWrite <= 0;
+            ALUSrcA <= 2'b00;
+            ALUSrcB <= 2'b00;
             EPCWrite <= 0;
-            ShiftControl <= 3'b000;
-            DivMultTempWrite <= 0;
-            Div <= 2'b00;
-            Mult <= 2'b00;
-            WriteHi <= 0;
-            WriteLo <= 0;
 
-            if (Counter == 2'b00) begin
-                Counter <= Counter + 1;
-            end
-            else if (Counter == 2'b01) begin
-                Counter <= 2'b00;
-                State <= OVERFLOW3;
-            end
+            State <= OVERFLOW3;
         end
         else if (State == OVERFLOW3) begin
-            PCWrite <= 0;
             MemWrRd <= 0;//
             MemAdrsSrc <= 3'b011;//
-            IRWrite <= 0;
             MDWrite <= 1;//
-            RegWrite <= 0;
-            ABWrite <= 0;
-            ALUControl <= 3'b000;
-            ALUOutWrite <= 0;
-            EPCWrite <= 0;
-            ShiftControl <= 3'b000;
-            DivMultTempWrite <= 0;
-            Div <= 2'b00;
-            Mult <= 2'b00;
-            WriteHi <= 0;
-            WriteLo <= 0;
-
-            Counter <= 2'b00;
+            
             State <= OVERFLOW4;
         end
         else if (State == OVERFLOW4) begin
             PCWrite <= 1;//
             PCSource <= 3'b100;//
-            MemWrRd <= 0;
-            IRWrite <= 0;
-            MDWrite <= 0;
             MDControl <= 2'b10;//
-            RegWrite <= 0;
-            ABWrite <= 0;
-            ALUControl <= 3'b000;
-            ALUOutWrite <= 0;
-            EPCWrite <= 0;
-            ShiftControl <= 3'b000;
-            DivMultTempWrite <= 0;
-            Div <= 2'b00;
-            Mult <= 2'b00;
-            WriteHi <= 0;
-            WriteLo <= 0;
+            MemWrRd <= 0;
+            MemAdrsSrc <= 3'b000;
+            MDWrite <= 0;
 
-            Counter <= 2'b00;
             State <= BUSCA1;
         end
         else if (State == INEXISTENTE) begin
-            PCWrite <= 0;
-            MemWrRd <= 0;
-            IRWrite <= 0;
-            MDWrite <= 0;
-            RegWrite <= 0;
-            ABWrite <= 0;
             ALUControl <= 3'b010;//
             ALUSrcA <= 2'b00;//
             ALUSrcB <= 2'b01;//
-            ALUOutWrite <= 0;
             EPCWrite <= 1;//
-            ShiftControl <= 3'b000;
-            DivMultTempWrite <= 0;
-            Div <= 2'b00;
-            Mult <= 2'b00;
-            WriteHi <= 0;
-            WriteLo <= 0;
-
-            Counter <= 2'b00;
+            MemWrRd <= 0;//
+            MemAdrsSrc <= 3'b010;//
+            ALUOutWrite <= 0;
+            
             State <= INEXISTENTE2;
         end
         else if (State == INEXISTENTE2) begin
-            PCWrite <= 0;
             MemWrRd <= 0;//
             MemAdrsSrc <= 3'b010;//
-            IRWrite <= 0;
-            MDWrite <= 0;
-            RegWrite <= 0;
-            ABWrite <= 0;
             ALUControl <= 3'b000;
-            ALUOutWrite <= 0;
+            ALUSrcA <= 2'b00;
+            ALUSrcB <= 2'b00;
             EPCWrite <= 0;
-            ShiftControl <= 3'b000;
-            DivMultTempWrite <= 0;
-            Div <= 2'b00;
-            Mult <= 2'b00;
-            WriteHi <= 0;
-            WriteLo <= 0;
 
-            if (Counter == 2'b00) begin
-                Counter <= Counter + 1;
-            end
-            else if (Counter == 2'b01) begin
-                Counter <= 2'b00;
-                State <= INEXISTENTE3;
-            end
+            State <= INEXISTENTE3;
         end
         else if (State == INEXISTENTE3) begin
-            PCWrite <= 0;
             MemWrRd <= 0;//
             MemAdrsSrc <= 3'b010;//
-            IRWrite <= 0;
             MDWrite <= 1;//
-            RegWrite <= 0;
-            ABWrite <= 0;
-            ALUControl <= 3'b000;
-            ALUOutWrite <= 0;
-            EPCWrite <= 0;
-            ShiftControl <= 3'b000;
-            DivMultTempWrite <= 0;
-            Div <= 2'b00;
-            Mult <= 2'b00;
-            WriteHi <= 0;
-            WriteLo <= 0;
 
-            Counter <= 2'b00;
             State <= INEXISTENTE4;
         end
         else if (State == INEXISTENTE4) begin
             PCWrite <= 1;//
             PCSource <= 3'b100;//
-            MemWrRd <= 0;
-            IRWrite <= 0;
-            MDWrite <= 0;
             MDControl <= 2'b10;//
-            RegWrite <= 0;
-            ABWrite <= 0;
-            ALUControl <= 3'b000;
-            ALUOutWrite <= 0;
-            EPCWrite <= 0;
-            ShiftControl <= 3'b000;
-            DivMultTempWrite <= 0;
-            Div <= 2'b00;
-            Mult <= 2'b00;
-            WriteHi <= 0;
-            WriteLo <= 0;
+            MemWrRd <= 0;
+            MemAdrsSrc <= 3'b000;
+            MDWrite <= 0;
 
-            Counter <= 2'b00;
             State <= BUSCA1;
         end
         else if (State == MULT1) begin
