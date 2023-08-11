@@ -35,6 +35,11 @@ always @(posedge Clock or posedge Reset) begin
         Multiplying_reg <= 32'd0;
         Product <= 64'd0;
     end
+    // Estado 0: Estado neutro.
+    else if (State == 2'b00) begin
+        MulttoControl = 0;
+        Counter = 6'd0;
+    end
     // Estado 1: Guardando valores e preparando para multiplicar.
     else if (State == 2'b01) begin
         Multiplying_reg = Multiplying;
@@ -71,7 +76,10 @@ always @(posedge Clock or posedge Reset) begin
                     Product[63:32] = Product[63:32] - Multiplying_reg;
             end
             
-            Product = {Product_signal, Product[63:1]};
+            if (Product[63:32] == 0)
+                Product = {1'b0, Product[63:1]};
+            else
+                Product = {Product_signal, Product[63:1]};
             Counter = Counter + 1;
         end
         

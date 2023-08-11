@@ -83,7 +83,7 @@ always @(posedge Clock or posedge Reset) begin
         end
         Count = Count - 1;
         if (Count == 5'b00000) begin
-            DivtoControl = 2'b01
+            DivtoControl = 2'b01;
         end
     end
 
