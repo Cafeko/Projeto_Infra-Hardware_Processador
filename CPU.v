@@ -328,6 +328,17 @@ module CPU (
         MUX_DivMult_Entry2_out
     );
 
+    Div Div_(
+        Div_out_hi,
+        Div_out_lo,
+        DivtoControl,
+        clock,
+        reset,
+        Div,
+        MUX_DivMult_Entry1_out,
+        MUX_DivMult_Entry2_out
+    );
+
     MUX_2to1 MUX_DivMult_Out1_(
         MUX_DivMult_Out1_out,
         Div_out_hi,
