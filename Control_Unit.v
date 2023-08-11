@@ -327,6 +327,7 @@ module Control_Unit (
             ALUSrcB <= 2'b00;
             ALUOutWrite <= 0;
 
+            Counter <= 2'b00;
             State <= BUSCA1;
         end
         else if (State == ESCREVE2) begin
@@ -338,6 +339,7 @@ module Control_Unit (
             ALUSrcB <= 2'b00;
             ALUOutWrite <= 0;
 
+            Counter <= 2'b00;
             State <= BUSCA1;
         end
         else if (State == AND) begin
@@ -354,10 +356,14 @@ module Control_Unit (
             ALUSrcB <= 2'b00;//
             ALUOutWrite <= 1;//
 
-            if (O == 1)
-                State <= OVERFLOW;
+            if (Counter == 2'b01) begin 
+                if (O == 1)
+                    State <= OVERFLOW;
+                else
+                    State <= ESCREVE1;
+            end
             else
-                State <= ESCREVE1;
+                Counter <= Counter + 1;
         end
         else if (State == SUB) begin
             ALUControl <= 3'b010;//
@@ -365,10 +371,14 @@ module Control_Unit (
             ALUSrcB <= 2'b00;//
             ALUOutWrite <= 1;//
             
-            if (O == 1)
-                State <= OVERFLOW;
+            if (Counter == 2'b01) begin 
+                if (O == 1)
+                    State <= OVERFLOW;
+                else
+                    State <= ESCREVE1;
+            end
             else
-                State <= ESCREVE1;
+                Counter <= Counter + 1;
         end
         else if (State == ADDIS) begin
             ALUControl <= 3'b001;//
@@ -376,10 +386,14 @@ module Control_Unit (
             ALUSrcB <= 2'b10;//
             ALUOutWrite <= 1;//
 
-            if (Opcode == 6'h8 && O == 1)
-                State <= OVERFLOW;
+            if (Counter == 2'b01) begin 
+                if (Opcode == 6'h8 && O == 1)
+                    State <= OVERFLOW;
+                else
+                    State <= ESCREVE2;
+            end
             else
-                State <= ESCREVE2;
+                Counter <= Counter + 1;
         end
         else if (State == JR) begin
             PCWrite <= 1;//
@@ -488,7 +502,7 @@ module Control_Unit (
                     State <= DESVIO;
             end
             else
-                Counter = Counter + 1;
+                Counter <= Counter + 1;
         end
         else if (State == DESVIO) begin
             PCWrite <= 1;//
@@ -554,10 +568,15 @@ module Control_Unit (
             MemAdrsSrc <= 3'b000;
             MDWrite <= 0;
 
-            if (O == 1)
-                State <= OVERFLOW;
+
+            if (Counter == 2'b01) begin 
+                if (O == 1)
+                    State <= OVERFLOW;
+                else
+                    State <= ESCREVE2;
+            end
             else
-                State <= ESCREVE2;
+                Counter <= Counter + 1;
         end
         else if (State == LB) begin
             MDControl <= 2'b10;//
@@ -829,66 +848,24 @@ module Control_Unit (
             State <= BUSCA1;
         end
         else if (State == MULT1) begin
-            PCWrite <= 0;
-            MemWrRd <= 0;
-            IRWrite <= 0;
-            MDWrite <= 0;
-            RegWrite <= 0;
-            ABWrite <= 0;
-            ALUControl <= 3'b000;
-            ALUOutWrite <= 0;
-            EPCWrite <= 0;
-            ShiftControl <= 3'b000;
-            DivMultTempWrite <= 0;
             DivMultEntry <= 0;//
-            Div <= 2'b00;
             Mult <= 2'b01;//
-            WriteHi <= 0;
-            WriteLo <= 0;
-
-            Counter <= 2'b00;
+            
             State <= MULT2;
         end
         else if (State == MULT2) begin
-            PCWrite <= 0;
-            MemWrRd <= 0;
-            IRWrite <= 0;
-            MDWrite <= 0;
-            RegWrite <= 0;
-            ABWrite <= 0;
-            ALUControl <= 3'b000;
-            ALUOutWrite <= 0;
-            EPCWrite <= 0;
-            ShiftControl <= 3'b000;
-            DivMultTempWrite <= 0;
-            Div <= 2'b00;
             Mult <= 2'b10;//
-            WriteHi <= 0;
-            WriteLo <= 0;
+            DivMultEntry <= 0;
 
-            Counter <= 2'b00;
             if (MulttoControl == 1)
                 State <= MULT3;
         end
         else if (State == MULT3) begin
-            PCWrite <= 0;
-            MemWrRd <= 0;
-            IRWrite <= 0;
-            MDWrite <= 0;
-            RegWrite <= 0;
-            ABWrite <= 0;
-            ALUControl <= 3'b000;
-            ALUOutWrite <= 0;
-            EPCWrite <= 0;
-            ShiftControl <= 3'b000;
-            DivMultTempWrite <= 0;
-            Div <= 2'b00;
             Mult <= 2'b00;
             DivorMult <= 1;//
             WriteHi <= 1;//
             WriteLo <= 1;//
 
-            Counter <= 2'b00;
             State <= BUSCA1;
         end
     end
