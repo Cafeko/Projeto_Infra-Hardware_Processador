@@ -814,25 +814,26 @@ module Control_Unit (
 
             State <= BUSCA1;
         end
-        else if (Funct == DIVM1) begin
+        else if (State == DIVM1) begin
             MemAdrsSrc <= 3'b110;//
             MemWrRd <= 0;//
 
             if (Counter == 2'b01) begin 
                 State <= DIVM2;
             end
-            else
+            else begin
                 Counter <= Counter + 1;
+            end
         end
-        else if (Funct == DIVM2) begin
+        else if (State == DIVM2) begin
             MemAdrsSrc <= 3'b101;//
             MemWrRd <= 0;//
             MDWrite <= 1;//
-
-            State <= DIVM3;
             
+            Counter <= 2'b00;
+            State <= DIVM3;
         end
-        else if (Funct == DIVM3) begin
+        else if (State == DIVM3) begin
             MemAdrsSrc <= 3'b101;//
             MemWrRd <= 0;//
             DivMultTempWrite = 1;//
@@ -841,7 +842,7 @@ module Control_Unit (
             State <= DIVM4;
             
         end
-        else if (Funct == DIVM4) begin
+        else if (State == DIVM4) begin
             MemAdrsSrc <= 3'b101;//
             MemWrRd <= 0;//
             MDWrite <= 1;//
@@ -849,7 +850,7 @@ module Control_Unit (
 
             State <= DIVM5;
         end
-        else if (Funct == DIVM5) begin
+        else if (State == DIVM5) begin
             DivMultEntry = 1;//
             Div = 2'b01;//
             MemAdrsSrc <= 3'b000;
