@@ -68,62 +68,74 @@ module Control_Unit (
     input  wire       GT,
     input  wire       LT
 );
-    parameter RESET1 = 6'd0;
-    parameter RESET2 = 6'd1;
-    parameter BUSCA1 = 6'd2;
-    parameter BUSCA2 = 6'd3;
-    parameter INSTRUCAOWRITE = 6'd4;
-    parameter LEITURA1 = 6'd5;
-    parameter LEITURA2 = 6'd6;
-    parameter ESCREVE1 = 6'd7;
-    parameter ESCREVE2 = 6'd8;
-    parameter AND = 6'd9;
-    parameter ADD = 6'd10;
-    parameter SUB = 6'd11;
-    parameter ADDIS = 6'd12;
-    parameter JR = 6'd13;
-    parameter J = 6'd14;
-    parameter JAL1 = 6'd15;
-    parameter JAL2 = 6'd16;
-    parameter MFHI = 6'd17;
-    parameter MFLO = 6'd18;
-    parameter SLT = 6'd19;
-    parameter BREAK = 6'd20;
-    parameter RTE = 6'd21;
-    parameter LUI = 6'd22;
-    parameter SLTI = 6'd23;
-    parameter BRANCHS = 6'd24;
-    parameter DESVIO = 6'd25;
-    parameter OFFSOMARS = 6'd26;
-    parameter MEMTOMDR1 = 6'd27;
-    parameter MEMTOMDR2 = 6'd28;
-    parameter ADDM = 6'd29;
-    parameter LB = 6'd30;
-    parameter LH = 6'd31;
-    parameter LW = 6'd32;
-    parameter SB = 6'd33;
-    parameter SH = 6'd34;
-    parameter SW = 6'd35;
-    parameter SHIFTSHAMT = 6'd36;
-    parameter SHIFTREG = 6'd37;
-    parameter SHIFTDIREITA = 6'd38;
-    parameter SHIFTARITMETICO = 6'd39;
-    parameter SHIFTESQUERDA = 6'd40;
-    parameter SHIFTRESULT = 6'd41;
-    parameter OVERFLOW = 6'd42;
-    parameter OVERFLOW2 = 6'd43;
-    parameter OVERFLOW3 = 6'd44;
-    parameter OVERFLOW4 = 6'd45;
-    parameter INEXISTENTE = 6'd46;
-    parameter INEXISTENTE2 = 6'd47;
-    parameter INEXISTENTE3 = 6'd48;
-    parameter INEXISTENTE4 = 6'd49;
-    parameter MULT1 = 6'd50;
-    parameter MULT2 = 6'd51;
-    parameter MULT3 = 6'd52;
+    parameter RESET1 = 7'd0;
+    parameter RESET2 = 7'd1;
+    parameter BUSCA1 = 7'd2;
+    parameter BUSCA2 = 7'd3;
+    parameter INSTRUCAOWRITE = 7'd4;
+    parameter LEITURA1 = 7'd5;
+    parameter LEITURA2 = 7'd6;
+    parameter ESCREVE1 = 7'd7;
+    parameter ESCREVE2 = 7'd8;
+    parameter AND = 7'd9;
+    parameter ADD = 7'd10;
+    parameter SUB = 7'd11;
+    parameter ADDIS = 7'd12;
+    parameter JR = 7'd13;
+    parameter J = 7'd14;
+    parameter JAL1 = 7'd15;
+    parameter JAL2 = 7'd16;
+    parameter MFHI = 7'd17;
+    parameter MFLO = 7'd18;
+    parameter SLT = 7'd19;
+    parameter BREAK = 7'd20;
+    parameter RTE = 7'd21;
+    parameter LUI = 7'd22;
+    parameter SLTI = 7'd23;
+    parameter BRANCHS = 7'd24;
+    parameter DESVIO = 7'd25;
+    parameter OFFSOMARS = 7'd26;
+    parameter MEMTOMDR1 = 7'd27;
+    parameter MEMTOMDR2 = 7'd28;
+    parameter ADDM = 7'd29;
+    parameter LB = 7'd30;
+    parameter LH = 7'd31;
+    parameter LW = 7'd32;
+    parameter SB = 7'd33;
+    parameter SH = 7'd34;
+    parameter SW = 7'd35;
+    parameter SHIFTSHAMT = 7'd36;
+    parameter SHIFTREG = 7'd37;
+    parameter SHIFTDIREITA = 7'd38;
+    parameter SHIFTARITMETICO = 7'd39;
+    parameter SHIFTESQUERDA = 7'd40;
+    parameter SHIFTRESULT = 7'd41;
+    parameter OVERFLOW = 7'd42;
+    parameter OVERFLOW2 = 7'd43;
+    parameter OVERFLOW3 = 7'd44;
+    parameter OVERFLOW4 = 7'd45;
+    parameter INEXISTENTE = 7'd46;
+    parameter INEXISTENTE2 = 7'd47;
+    parameter INEXISTENTE3 = 7'd48;
+    parameter INEXISTENTE4 = 7'd49;
+    parameter MULT1 = 7'd50;
+    parameter MULT2 = 7'd51;
+    parameter MULT3 = 7'd52;
+    parameter DIV1 = 7'd53;
+    parameter DIV2 = 7'd54;
+    parameter DIV3 = 7'd55;
+    parameter DIVM1 = 7'd56;
+    parameter DIVM2 = 7'd57;
+    parameter DIVM3 = 7'd58;
+    parameter DIVM4 = 7'd59;
+    parameter DIVM5 = 7'd60;
+    parameter DIVZERO = 7'd61;
+    parameter DIVZERO2 = 7'd62;
+    parameter DIVZERO3 = 7'd63;
+    parameter DIVZERO4 = 7'd64;
 
     
-    reg [5:0] State;
+    reg [6:0] State;
     reg [1:0] Counter;
     
 
@@ -274,6 +286,8 @@ module Control_Unit (
                     State <= SHIFTSHAMT;
                 else if (Funct == 6'h4 || Funct == 6'h7)
                     State <= SHIFTREG;
+                else if (Funct == 6'h5)
+                    State <= DIVM1;
                 else if (Funct == 6'h8)
                     State <= JR;
                 else if (Funct == 6'hd)
@@ -286,6 +300,8 @@ module Control_Unit (
                     State <= RTE;
                 else if (Funct == 6'h18)
                     State <= MULT1;
+                else if (Funct == 6'h1a)
+                    State <= DIV1; 
                 else if (Funct == 6'h20)
                     State <= ADD;
                 else if (Funct == 6'h22)
@@ -511,7 +527,7 @@ module Control_Unit (
             ALUSrcA <= 2'b00;
             ALUSrcB <= 2'b00;
 
-            Counter = 2'b00;
+            Counter <= 2'b00;
             State <= BUSCA1;
         end
         else if (State == OFFSOMARS) begin
@@ -768,12 +784,117 @@ module Control_Unit (
                 State <= MULT3;
         end
         else if (State == MULT3) begin
-            Mult <= 2'b00;
             DivorMult <= 1;//
             WriteHi <= 1;//
             WriteLo <= 1;//
+            Mult <= 2'b00;
 
             State <= BUSCA1;
+        end
+        else if (State == DIV1) begin
+            DivMultEntry <= 0;//
+            Div <= 2'b01;//
+
+            State <= DIV2;
+        end
+        else if (State == DIV2) begin
+            Div <= 2'b10;//
+            DivMultEntry <= 0;
+
+            if (DivtoControl == 2'b01)
+                State <= DIV3;
+            else if (DivtoControl == 2'b10)
+                State <= DIVZERO;
+        end
+        else if (State == DIV3) begin
+            DivorMult <= 0;//
+            WriteHi <= 1;//
+            WriteLo <= 1;//
+            Div <= 2'b00;
+
+            State <= BUSCA1;
+        end
+        else if (Funct == DIVM1) begin
+            MemAdrsSrc <= 3'b110;//
+            MemWrRd <= 0;//
+
+            if (Counter == 2'b01) begin 
+                State <= DIVM2;
+            end
+            else
+                Counter <= Counter + 1;
+        end
+        else if (Funct == DIVM2) begin
+            MemAdrsSrc <= 3'b101;//
+            MemWrRd <= 0;//
+            MDWrite <= 1;//
+
+            State <= DIVM3;
+            
+        end
+        else if (Funct == DIVM3) begin
+            MemAdrsSrc <= 3'b101;//
+            MemWrRd <= 0;//
+            DivMultTempWrite = 1;//
+            MDWrite <= 0;
+
+            State <= DIVM4;
+            
+        end
+        else if (Funct == DIVM4) begin
+            MemAdrsSrc <= 3'b101;//
+            MemWrRd <= 0;//
+            MDWrite <= 1;//
+            DivMultTempWrite = 0;
+
+            State <= DIVM5;
+        end
+        else if (Funct == DIVM5) begin
+            DivMultEntry = 1;//
+            Div = 2'b01;//
+            MemAdrsSrc <= 3'b000;
+            MemWrRd <= 0;
+            MDWrite <= 0;
+
+            State <= DIV2;
+        end
+        else if (State == DIVZERO) begin
+            ALUControl <= 3'b010;//
+            ALUSrcA <= 2'b00;//
+            ALUSrcB <= 2'b01;//
+            EPCWrite <= 1;//
+            MemWrRd <= 0;//
+            MemAdrsSrc <= 3'b100;//
+            Div <= 2'b00;
+
+            State <= DIVZERO2;  
+        end
+        else if (State == DIVZERO2) begin
+            MemWrRd <= 0;//
+            MemAdrsSrc <= 3'b100;//
+            ALUControl <= 3'b000;
+            ALUSrcA <= 2'b00;
+            ALUSrcB <= 2'b00;
+            EPCWrite <= 0;
+
+            State <= DIVZERO3;  
+        end
+        else if (State == DIVZERO3) begin
+            MemWrRd <= 0;//
+            MemAdrsSrc <= 3'b100;//
+            MDWrite <= 1;//
+
+            State <= DIVZERO4;  
+        end
+        else if (State == DIVZERO4) begin
+            PCWrite <= 1;//
+            PCSource <= 3'b100;//
+            MDControl <= 2'b10;//
+            MemWrRd <= 0;
+            MemAdrsSrc <= 3'b000;
+            MDWrite <= 0;
+
+            State <= BUSCA1;  
         end
     end
 endmodule

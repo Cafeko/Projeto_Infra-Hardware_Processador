@@ -9,102 +9,113 @@ module Div(
     input wire [31:0] Divider
 );
 
-// Estados
-    //0 = 2'b00;
-    //1 = 2'b01;
-    //FIM = 2'b10;
+// DivtoControl:
+    // 00 = Neutro.
+    // 01 = Fim da divisão.
+    // 10 = Divisão por 0.
+    
 
 // Registradores internos
-reg [64:0] A;
-reg [64:0] P;
-reg [4:0] Count;
+reg [63:0] Resto;
+reg [31:0] Divider_reg;
+reg [5:0] Counter;
+reg Dividend_Sinal;
+reg Divider_Sinal;
+reg [31:0] Temp;
 
 initial begin
-    A <= 65'd0;
-    P <= 65'd0;
-    Count <= 5'b11111;
-    DivtoControl = 0;
+    Resto = 64'd0;
+    Divider_reg = 32'd0;
+    Counter = 6'd0;
+    DivtoControl = 2'b00;
 end
 
 always @(posedge Clock or posedge Reset) begin
     if (Reset) begin
-        A <= 65'd0;
-        P <= 65'd0;
-        Count <= 5'b11111;
-        DivtoControl = 0;
-    end
-
-    else if (State == 2'b00) begin
-        if(Divider == 32'd0) begin
-            DivtoControl = 2'b10;
-        end else begin
-            DivtoControl = 2'b00;
-        end
-    end
-
-    else if (State == 2'b01) begin
+        Resto = 64'd0;
+        Divider_reg = 32'd0;
+        Counter = 6'd0;
         DivtoControl = 2'b00;
-        Count = 5'b11111;
-        if (Divider[31] == 1'b0)begin
-            A = {{1'b0},Divider,{32{1'b0}}};
-        end else begin
-            A = {{1'b1},Divider,{32{1'b0}}};
-        end
-        if (Dividend[31] == 1'b0)begin
-            P = {{33{1'b0}}, Dividend};
-        end else begin
-            P = {{33{1'b1}}, Dividend};
-        end
-        if (Divider[31] == 1'b1) begin 
-            A = -A;
-            P = -P;
-        end
-        P = P << 1;
-        if (P[64] == 1'b1)begin
-            P = P + A;
-        end else begin 
-            P = P - A;
-        end
-        if (P[64] == 1'b0)begin
-            P[0] = 1'b1;
-        end
-        Count = Count - 1;
+        Dividend_Sinal = 0;
+        Divider_Sinal = 0;
+    end
+    
+    // Estado 0: Estado neutro.
+    else if (State == 2'b00) begin
+        Counter = 6'd0;
+        DivtoControl = 2'b00;
+        Dividend_Sinal = 0;
+        Divider_Sinal = 0;
     end
 
+    // Estado 1: Guardando valores e preparando para dividir.
+    else if (State == 2'b01) begin
+        if (Dividend[31] == 1) begin
+            Resto = {32'd0, ((~Dividend) + 1)};
+            Dividend_Sinal = 1;
+        end
+        else begin
+            Resto = {32'd0, Dividend};
+            Dividend_Sinal = 0;
+        end
+
+        if (Divider[31] == 1) begin
+            Divider_reg = (~Divider) + 1;
+            Divider_Sinal = 1;
+        end
+        else begin
+            Divider_reg = Divider;
+            Divider_Sinal = 0;
+        end
+
+        if (Divider_reg == 0)
+            DivtoControl = 2'b10;
+    end
+
+    // Estado 2: Faz divisão.
     else if (State == 2'b10) begin
-        P = P << 1;
-        if (P[64] == 1'b1)begin
-            P = P + A;
-        end else begin 
-        P = P - A;
+        if (Counter <= 32) begin
+            Temp = Resto[63:32] - Divider_reg;
+
+            if (Temp[31] == 1) begin
+                Resto[63:32] = Resto[63:32];
+                Resto = {Resto[62:0], 1'b0};
+            end
+            else begin
+                Resto[63:32] = Temp;
+                Resto = {Resto[62:0], 1'b1};
+            end
+
+            Counter = Counter + 1;
         end
-        if (P[64] == 1'b0)begin
-            P[0] = 1'b1;
-        end
-        Count = Count - 1;
-        if (Count == 5'b00000) begin
+
+        if (Counter >= 33) begin
+            if (DivtoControl != 2'b01) begin
+                if (Dividend_Sinal == Divider_Sinal) begin
+                    Resto[31:0] = Resto[31:0];
+                end
+                else begin
+                    Resto[31:0] = (~Resto[31:0]) + 1;
+                end
+
+                if (Resto[63:32] != 0) begin
+                    Resto[63:32] = {1'b0, Resto[63:33]};
+                    if (Dividend_Sinal == 0)
+                        Resto[63:32] = Resto[63:32];
+                    else 
+                        Resto[63:32] = (~Resto[63:32]) + 1;
+                end
+            end
+
             DivtoControl = 2'b01;
         end
     end
-
-    else if (State == 2'b11) begin
-        P = P << 1;
-        if (P[64] == 1'b1)begin
-            P = P + A;
-        end else begin 
-            P = P - A;
-        end
-        if (P[64] == 1'b0)begin
-            P[0] = 1'b1;
-        end
-        if (P[64] == 1'b1)begin
-            P = P + A;
-        end else begin 
-            P = P - A;
-        end
-        Hi = P[63:32];
-        Lo = P[31:0];
-    end
 end
+
+
+always @(*) begin
+        Hi = Resto[63:32];
+        Lo = Resto[31:0];
+    end
 
 endmodule
