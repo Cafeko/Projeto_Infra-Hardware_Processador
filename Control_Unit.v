@@ -836,7 +836,7 @@ module Control_Unit (
         else if (State == DIVM3) begin
             MemAdrsSrc <= 3'b101;//
             MemWrRd <= 0;//
-            DivMultTempWrite = 1;//
+            DivMultTempWrite <= 1;//
             MDWrite <= 0;
 
             State <= DIVM4;
@@ -846,13 +846,13 @@ module Control_Unit (
             MemAdrsSrc <= 3'b101;//
             MemWrRd <= 0;//
             MDWrite <= 1;//
-            DivMultTempWrite = 0;
+            DivMultTempWrite <= 0;
 
             State <= DIVM5;
         end
         else if (State == DIVM5) begin
-            DivMultEntry = 1;//
-            Div = 2'b01;//
+            DivMultEntry <= 1;//
+            Div <= 2'b01;//
             MemAdrsSrc <= 3'b000;
             MemWrRd <= 0;
             MDWrite <= 0;
